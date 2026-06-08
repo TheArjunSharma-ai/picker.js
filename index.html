@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pickr.js — Date, Time & Range Pickers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="logic-V1/style.css">
+</head>
+<body>
+
+  <main class="page-center">
+    <div class="pickers-col">
+
+      <div class="pickers-row">
+        <div class="picker-wrapper">
+          <label class="picker-label">Date</label>
+          <input type="text" id="date-input" placeholder="📅  Select a date" readonly>
+        </div>
+        <div class="picker-wrapper">
+          <label class="picker-label">Time (clock)</label>
+          <input type="text" id="clock-input" placeholder="🕐  Select a time" readonly>
+        </div>
+      </div>
+
+      <div class="pickers-row">
+        <div class="picker-wrapper">
+          <label class="picker-label">Date Range</label>
+          <input type="text" id="range-input" value="June-07, 2026 → July-09, 2026"  placeholder="📆  Select date range" readonly style="width:300px">
+        </div>
+        <div class="picker-wrapper">
+          <label class="picker-label">Timer (scroll)</label>
+          <input type="text" id="timer-input" placeholder="⏱  Set a time" readonly>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- pickr library -->
+  <script src="logic-V1/script.js"></script>
+
+  <!-- Initialize all pickers -->
+  <script>
+    pickr.calendar({
+      selector : '#date-input',
+      format   : 'MMM.dd, yy',
+      min      : new Date(),
+      max      : new Date(2099, 11, 31),
+      onChange : (date) => console.log('Date selected:', date),
+    });
+
+    pickr.dateRange({
+      selector : '#range-input',
+      format   : 'MMMM-dd, yy',
+      min      : new Date(),
+      max      : new Date(2099, 11, 31),
+      onChange : ({start, end}) => console.log('Range:', start, '→', end),
+    });
+
+    pickr.clock({
+      selector : '#clock-input',
+      format   : '24',
+      onChange : ({hour, minute, isAM}) => console.log('Clock:', hour, minute, isAM),
+    });
+
+    pickr.timer({
+      selector : '#timer-input',
+      format   : '24',
+      onChange : ({hour, minute, isAM}) => console.log('Timer:', hour, minute, isAM),
+    });
+  </script>
+
+</body>
+</html>
