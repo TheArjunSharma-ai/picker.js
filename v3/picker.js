@@ -298,13 +298,16 @@
         drop.querySelectorAll('.tp-mode-btn').forEach((b) => b.classList.toggle('active', b.dataset.mode === mode));
         if (is12) drop.querySelectorAll('.tp-ampm-btn').forEach((b) => b.classList.toggle('active', (b.dataset.ampm === 'am') === isAM));
     };
-    const btnHeaderClockHTML = `
-        <div class="tp-mode-row">
+    const modeToggleHTML = (mode = 'hour') => {
+        const active = 'active'
+        return `
+    <div class="tp-mode-row">
             <button class="tp-mode-btn active" data-mode="hour">Hour</button>
             <button class="tp-mode-btn" data-mode="minute">Minute</button>
-        </div>
-      `
-    const clockHeaderHTML = (label) => timeHeaderHTML(label, 10, '00', true, btnHeaderClockHTML)
+          </div>
+    `
+    }
+    const clockHeaderHTML = (label) => timeHeaderHTML(label, 10, '00', true, modeToggleHTML())
 
     const bindClockControls = (drop, is12, getMode, setMode, setAM, render) => {
         drop.querySelectorAll('.tp-mode-btn').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); setMode(b.dataset.mode); render(); }));
@@ -601,7 +604,7 @@
             return {
                 calendar: (o) => calendar({ ...o, selector }),
                 dateRange: (o) => dateRange({ ...o, selector }),
-                dateTime: (o) => dateTime({ ...o, selector }),
+                // dateTime: (o) => dateTime({ ...o, selector }),
                 clock: (o) => clock({ ...o, selector }),
                 timer: (o) => timer({ ...o, selector }),
             };
@@ -611,7 +614,7 @@
 
     pickr.calendar = calendar;
     pickr.dateRange = dateRange;
-    pickr.dateTime = dateTime;
+    // pickr.dateTime = dateTime;
     pickr.clock = clock;
     pickr.timer = timer;
 

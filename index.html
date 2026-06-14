@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>pickr.js — Date, Time & Range Pickers</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="logic-V1/style.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="v4/picker.css">
 </head>
+
 <body>
 
   <main class="page-center">
@@ -28,50 +32,97 @@
       <div class="pickers-row">
         <div class="picker-wrapper">
           <label class="picker-label">Date Range</label>
-          <input type="text" id="range-input" value="June-07, 2026 → July-09, 2026"  placeholder="📆  Select date range" readonly style="width:300px">
+          <input type="text" id="range-input" value="June-07, 2026 → July-09, 2026" placeholder="📆  Select date range"
+            readonly style="width:300px">
         </div>
         <div class="picker-wrapper">
           <label class="picker-label">Timer (scroll)</label>
           <input type="text" id="timer-input" placeholder="⏱  Set a time" readonly>
         </div>
       </div>
-
+      <div class="picker-wrapper">
+        <label class="picker-label">Date Time</label>
+        <input type="text" id="datetime-input" placeholder="📆⏱  Set date time" readonly>
+      </div>
+      <div class="pickers-row">
+        <div class="picker-wrapper">
+          <label class="picker-label">Date &amp; Time (12h)</label>
+          <input type="text" id="a-datetime" placeholder="🗓  Select date &amp; time" readonly style="width:240px">
+        </div>
+        <div class="picker-wrapper">
+          <label class="picker-label">Date &amp; Time (24h)</label>
+          <input type="text" id="b-datetime" placeholder="🗓  Select date &amp; time" readonly style="width:240px">
+        </div>
+      </div>
+      <input list="hours24" data-part="hours24">
     </div>
   </main>
 
   <!-- pickr library -->
-  <script src="logic-V1/script.js"></script>
+  <!-- <script src="test.js"></script> -->
+  <script src="v4/picker.js"></script>
+  <!-- <script src="v3/datetime.pickr.js"></script> -->
 
   <!-- Initialize all pickers -->
   <script>
     pickr.calendar({
-      selector : '#date-input',
-      format   : 'MMM.dd, yy',
-      min      : new Date(),
-      max      : new Date(2099, 11, 31),
-      onChange : (date) => console.log('Date selected:', date),
+      selector: '#date-input',
+      format: 'MMM.dd, yy',
+      min: new Date(),
+      max: new Date(2099, 11, 31),
+      onChange: (date) => console.log('Date selected:', date),
     });
 
     pickr.dateRange({
-      selector : '#range-input',
-      format   : 'MMMM-dd, yy',
-      min      : new Date(),
-      max      : new Date(2099, 11, 31),
-      onChange : ({start, end}) => console.log('Range:', start, '→', end),
+      selector: '#range-input',
+      format: 'MMMM-dd, yy',
+      min: new Date(),
+      max: new Date(2099, 11, 31),
+      onChange: ({ start, end }) => console.log('Range:', start, '→', end),
     });
 
     pickr.clock({
-      selector : '#clock-input',
-      format   : '24',
-      onChange : ({hour, minute, isAM}) => console.log('Clock:', hour, minute, isAM),
+      selector: '#clock-input',
+      format: '24',
+      onChange: ({ hour, minute, isAM }) => console.log('Clock:', hour, minute, isAM),
     });
 
     pickr.timer({
-      selector : '#timer-input',
-      format   : '24',
-      onChange : ({hour, minute, isAM}) => console.log('Timer:', hour, minute, isAM),
+      selector: '#timer-input',
+      format: '24',
+      onChange: ({ hour, minute, isAM }) => console.log('Timer:', hour, minute, isAM),
+    });
+    pickr.dateTime({
+      selector: '#datetime-input',
+      format: 'MMMM-dd, yy hh:mm a',
+      min: new Date(),
+      max: new Date(2099, 11, 31),
+      onChange: ({ start, end }) => console.log('Range:', start, '→', end),
+    });
+    // dateTime — full-page modal
+    pickr.dateTime({
+      selector      : '#a-datetime',
+      dateFormat    : 'MMM dd, yyyy',
+      timeFormat    : '12',
+      min           : new Date(),
+      confirmLabel  : 'Confirm Appointment',
+      cancelLabel   : 'Cancel',
+      time:'timer',
+      onChange      : ({ date, hour, minute, isAM }) =>
+        console.log('datetime 12h:', date, `${hour}:${minute}`, isAM ? 'AM' : 'PM'),
+    });
+ 
+    pickr.dateTime({
+      selector:'#b-datetime',
+      dateFormat   : 'MMM dd, yyyy',
+      timeFormat   : '24',
+      confirmLabel : 'Set DateTime',
+      time:'timer',
+      onChange     : ({ date, hour, minute }) =>
+        console.log('datetime 24h:', date, `${hour}:${minute}`),
     });
   </script>
 
 </body>
+
 </html>

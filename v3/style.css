@@ -130,6 +130,9 @@ body {
 }
 
 /* ─── Nav row ────────────────────────────────────────────────────────── */
+.cal-section {
+  border-top: 1px solid var(--outline-subtle);
+}
 .cal-nav-row {
   display: flex;
   align-items: center;
@@ -281,7 +284,7 @@ body {
   font-family: 'DM Sans', sans-serif;
   font-size: 12px; font-weight: 600;
   padding: 5px 14px; border-radius: var(--radius-full); border: none;
-  background: rgba(255,255,255,.14); color: rgba(255,255,255,.65);
+  background: rgba(255,255,255,.34); color: rgba(255,255,255,.85);
   cursor: pointer; transition: all .15s;
 }
 .tp-mode-btn.active { background: white; color: var(--primary-container); }
@@ -380,3 +383,182 @@ body {
 }
 .btn-set:hover  { background: #2d1faa; box-shadow: 0 4px 12px rgba(31,16,142,.25); }
 .btn-set:active { transform: scale(.97); }
+
+/* ─── API demo labels ─────────────────────────────────────────────────  */
+.api-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--on-surface-muted);
+  margin-bottom: 4px;
+}
+.api-label code {
+  font-family: monospace;
+  font-size: 12px;
+  background: var(--surface-container);
+  padding: 2px 7px;
+  border-radius: 5px;
+  color: var(--primary);
+}
+.api-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--outline-subtle);
+  margin: 4px 0;
+}
+
+/* ─── Section labels ──────────────────────────────────────────────── */
+.section-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--on-surface-muted);
+  margin-bottom: 2px;
+}
+.section-label code {
+  font-family: monospace;
+  font-size: 11px;
+  background: var(--surface-container);
+  padding: 2px 6px;
+  border-radius: 5px;
+  color: var(--primary);
+}
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--outline-subtle);
+  margin: 4px 0 8px;
+}
+
+/* ─── DateTime picker (side-by-side layout) ───────────────────────── */
+.pickr-datetime {
+  width: 620px;
+}
+
+.dt-layout {
+  display: flex;
+  align-items: stretch;
+}
+
+/* Date panel — left */
+.dt-date-panel {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Time panel — right */
+.dt-time-panel {
+  flex: 0 0 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Vertical divider between panels */
+.dt-divider {
+  width: 1px;
+  background: var(--outline-subtle);
+  flex-shrink: 0;
+}
+
+/* Each panel's purple header */
+.dt-cal-header {
+  background: var(--primary-container);
+  padding: 18px 18px 14px;
+  color: white;
+}
+
+/* Shared header inside time panel */
+.dt-time-panel .tp-header {
+  padding: 18px 16px 12px;
+}
+
+/* Smaller clock face inside datetime */
+.dt-time-panel .tp-clock-face {
+  width: 200px;
+  height: 200px;
+}
+
+.dt-time-panel .tp-clock-wrap {
+  padding: 10px 16px 14px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Nav scoped to date panel only */
+.dt-nav {
+  padding: 10px 14px 4px;
+}
+
+/* Tighter grid inside datetime */
+.dt-date-panel .cal-grid-wrap {
+  padding: 0 12px 12px;
+}
+
+.dt-date-panel .cal-day {
+  font-size: 12px;
+  padding: 5px 2px;
+}
+
+/* Footer spans full width below both panels */
+.pickr-datetime .cal-footer {
+  border-top: 1px solid var(--outline-subtle);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   dateTime() — compact dropdown (appointment card style)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Card width — same feel as clock picker */
+.pickr-datetime { width: 320px; }
+
+/* ── Purple summary header ────────────────────────────────────────── */
+.pdt-header {
+  background: var(--primary-container);
+  padding: 16px 18px 14px;
+  color: white;
+  user-select: none;
+}
+.pdt-header-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  opacity: .72;
+  margin-bottom: 6px;
+}
+.pdt-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pdt-sum-date,
+.pdt-sum-time {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  line-height: 1.1;
+  color: white;
+}
+.pdt-sum-sep { opacity: .45; font-size: 16px; }
+/* ── Time body ────────────────────────────────────────────────────── */
+.pdt-time-body input,.pdt-time-body button {
+  color: #0d1c2e !important;
+  background-color: transparent;
+}
+.pdt-time-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 14px 14px;
+}
+.pdt-time-body .tp-mode-row .active,.pdt-time-body .tp-ampm-toggle .active{
+   background: var(--primary-container) !important;
+    color: #fff !important; }
+.pdt-time-body .tp-mode-btn,.pdt-time-body .tp-ampm-btn { background: var(--surface-low);}
+.tp-display-part input { display: flex;
+    font-size: 100% !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 1.3em !important
+  }

@@ -1,0 +1,564 @@
+/* ─── Google Fonts: DM Sans + DM Serif Display ──────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary:           #1f108e;
+  --primary-container: #3730a3;
+  --on-primary:        #ffffff;
+  --on-primary-dim:    #a9a7ff;
+  --surface:           #f8f9ff;
+  --surface-low:       #eff4ff;
+  --surface-container: #e6eeff;
+  --surface-high:      #dce9ff;
+  --on-surface:        #0d1c2e;
+  --on-surface-muted:  #464553;
+  --outline:           #777584;
+  --outline-subtle:    #c8c4d5;
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --radius-lg:   18px;
+  --radius-full: 9999px;
+  --shadow: 0 10px 40px -8px rgba(31,16,142,0.14);
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--surface);
+  color: var(--on-surface);
+  min-height: 100vh;
+}
+
+.page-center {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.pickers-col { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
+.pickers-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end; }
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+.picker-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--outline);
+  margin-bottom: 6px;
+}
+
+/* ─── Input trigger ──────────────────────────────────────────────────── */
+.picker-wrapper { position: relative; display: inline-block; }
+
+.picker-wrapper input[type="text"] {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 11px 16px;
+  border: 1.5px solid var(--outline-subtle);
+  border-radius: var(--radius-md);
+  background: white;
+  color: var(--on-surface);
+  width: 220px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color .2s;
+}
+.picker-wrapper input[type="text"]:hover,
+.picker-wrapper input[type="text"]:focus { border-color: var(--primary); }
+
+/* ─── Base dropdown card ──────────────────────────────────────────────  */
+.pickr-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  z-index: 200;
+  animation: pickrIn .17s cubic-bezier(.4,0,.2,1);
+  user-select: none;
+  -webkit-user-select: none;
+}
+.pickr-dropdown.open { display: block; }
+
+@keyframes pickrIn {
+  from { opacity: 0; transform: translateY(5px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.pickr-calendar { width: 340px; }
+.pickr-range    { width: 340px; }
+.pickr-clock    { width: 300px; }
+.pickr-timer    { width: 280px; }
+
+/* ─── Shared header ───────────────────────────────────────────────────  */
+.cal-header-display,
+.rp-header,
+.tp-header {
+  background: var(--primary-container);
+  padding: 20px 20px 16px;
+  color: white;
+}
+.cal-header-label,
+.rp-header-label,
+.tp-header-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  opacity: .72;
+  margin-bottom: 8px;
+}
+.cal-header-date {
+  font-family: 'DM Serif Display', serif;
+  font-size: 42px;
+  line-height: 1;
+  color: white;
+}
+.cal-header-year {
+  font-size: 17px;
+  font-weight: 500;
+  opacity: .85;
+  margin-top: 2px;
+}
+
+/* ─── Nav row ────────────────────────────────────────────────────────── */
+.cal-section {
+  border-top: 1px solid var(--outline-subtle);
+}
+.cal-nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px 6px;
+}
+.cal-month-title { font-size: 14px; font-weight: 600; color: var(--on-surface); }
+.cal-nav-btns   { display: flex; gap: 4px; }
+.cal-nav-btn {
+  width: 34px; height: 34px;
+  border: none; background: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--on-surface-muted);
+  font-family: 'Material Symbols Outlined';
+  font-size: 20px;
+  transition: background .13s, transform .1s;
+}
+.cal-nav-btn:hover  { background: var(--surface-low); }
+.cal-nav-btn:active { transform: scale(.9); }
+
+/* ─── Calendar grid ───────────────────────────────────────────────────  */
+.cal-grid-wrap { padding: 0 14px 14px; }
+.cal-dow-row {
+  display: grid;
+  grid-template-columns: repeat(7,1fr);
+  margin-bottom: 4px;
+}
+.cal-dow {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--outline);
+  padding: 5px 0;
+  letter-spacing: .03em;
+}
+.cal-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7,1fr);
+  gap: 2px;
+}
+.cal-day {
+  aspect-ratio: 1/1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 500;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  color: var(--on-surface);
+  position: relative;
+  transition: background .13s, color .13s, transform .1s;
+}
+.cal-day:hover:not(.disabled) { background: var(--surface-container); }
+.cal-day:active               { transform: scale(.9); }
+.cal-day.other-month          { color: var(--outline-subtle); pointer-events: none; }
+.cal-day.disabled             { color: var(--outline-subtle); cursor: not-allowed; pointer-events: none; }
+.cal-day.today::after {
+  content: ''; position: absolute; bottom: 3px; left: 50%;
+  transform: translateX(-50%);
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--primary);
+}
+.cal-day.selected { background: var(--primary); color: white; font-weight: 600; }
+.cal-day.selected:hover { background: #2d1faa; }
+.cal-day.selected.today::after { background: white; }
+
+/* ─── Range grid ─────────────────────────────────────────────────────── */
+.rp-header-dates  { display: flex; align-items: center; gap: 8px; }
+.rp-header-slot   {
+  flex: 1;
+  background: rgba(255,255,255,.12);
+  border: 1.5px solid rgba(255,255,255,.2);
+  border-radius: var(--radius-md);
+  padding: 9px 11px;
+  transition: background .15s, border-color .15s;
+}
+.rp-header-slot.active { background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.6); }
+.rp-slot-label {
+  display: block; font-size: 10px; font-weight: 600;
+  letter-spacing: .07em; text-transform: uppercase;
+  opacity: .65; margin-bottom: 2px;
+}
+.rp-slot-value { display: block; font-family: 'DM Serif Display', serif; font-size: 18px; line-height: 1.1; color: white; }
+.rp-header-arrow { font-size: 14px; opacity: .55; flex-shrink: 0; }
+
+.rp-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7,1fr);
+  gap: 0; row-gap: 2px;
+}
+.rp-day {
+  aspect-ratio: 1/1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 500;
+  cursor: pointer; color: var(--on-surface);
+  position: relative; border-radius: 0;
+  transition: color .12s;
+}
+.rp-day.other-month { color: var(--outline-subtle); pointer-events: none; }
+.rp-day.disabled    { color: var(--outline-subtle); pointer-events: none; cursor: not-allowed; }
+.rp-day.today::after {
+  content: ''; position: absolute; bottom: 3px; left: 50%;
+  transform: translateX(-50%);
+  width: 4px; height: 4px; border-radius: 50%; background: var(--primary);
+}
+.rp-day.rp-in-range { background: var(--surface-container); border-radius: 0; }
+.rp-day.rp-start, .rp-day.rp-end, .rp-day.rp-hover-end {
+  color: white; font-weight: 600; z-index: 2;
+}
+.rp-day.rp-start::before, .rp-day.rp-end::before, .rp-day.rp-hover-end::before {
+  content: ''; position: absolute; inset: 2px;
+  border-radius: 50%; background: var(--primary); z-index: -1;
+}
+.rp-day.rp-hover-end::before { background: #4d3ec4; }
+.rp-day.rp-range-left  { background: linear-gradient(to right, transparent 50%, var(--surface-container) 50%); border-radius: 0; }
+.rp-day.rp-range-right { background: linear-gradient(to left,  transparent 50%, var(--surface-container) 50%); border-radius: 0; }
+.rp-day.rp-range-left.rp-range-right { background: transparent; }
+.rp-day:not(.rp-start):not(.rp-end):not(.rp-in-range):not(.rp-hover-end):not(.other-month):not(.disabled):hover {
+  background: var(--surface-container); border-radius: var(--radius-full);
+}
+.rp-day.rp-start.today::after, .rp-day.rp-end.today::after { background: white; }
+
+/* ─── Clock (analog) ──────────────────────────────────────────────────  */
+.tp-display-row { display: flex; align-items: center; gap: 2px; }
+.tp-display-part {
+  font-family: 'DM Serif Display', serif;
+  font-size: 46px; line-height: 1; color: white;
+  cursor: pointer; border-radius: 8px; padding: 2px 5px;
+  transition: background .15s, opacity .15s;
+}
+.tp-display-part:hover { background: rgba(255,255,255,.15); }
+.tp-display-part.tp-dim { opacity: .45; }
+.tp-display-colon { font-family: 'DM Serif Display', serif; font-size: 42px; color: white; opacity: .65; margin: 0 1px; }
+
+.tp-ampm-toggle { display: flex; flex-direction: column; gap: 3px; margin-left: 10px; }
+.tp-ampm-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; font-weight: 600;
+  padding: 5px 9px;
+  border: 1.5px solid rgba(255,255,255,.35);
+  border-radius: 7px; background: none;
+  color: rgba(255,255,255,.55); cursor: pointer;
+  transition: all .15s;
+}
+.tp-ampm-btn.active { background: white; color: var(--primary-container); border-color: white; }
+
+.tp-mode-row { display: flex; gap: 6px; margin-top: 12px; }
+.tp-mode-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px; font-weight: 600;
+  padding: 5px 14px; border-radius: var(--radius-full); border: none;
+  background: rgba(255,255,255,.34); color: rgba(255,255,255,.85);
+  cursor: pointer; transition: all .15s;
+}
+.tp-mode-btn.active { background: white; color: var(--primary-container); }
+
+.tp-clock-wrap { padding: 16px; display: flex; justify-content: center; }
+.tp-clock-face {
+  width: 240px; height: 240px; border-radius: 50%;
+  background: var(--surface-low); position: relative;
+  cursor: pointer; touch-action: none;
+  box-shadow: inset 0 2px 8px rgba(31,16,142,.07);
+}
+.tp-clock-center {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--primary); z-index: 20;
+}
+.tp-clock-hand {
+  position: absolute; bottom: 50%; left: 50%;
+  width: 2px; margin-left: -1px;
+  background: var(--primary);
+  transform-origin: bottom center;
+  transition: transform .12s cubic-bezier(.4,0,.2,1), height .12s;
+  z-index: 10; border-radius: 2px 2px 0 0;
+}
+.tp-clock-hand::after {
+  content: ''; position: absolute; top: -13px; left: 50%;
+  transform: translateX(-50%);
+  width: 26px; height: 26px;
+  background: var(--primary); border-radius: 50%;
+}
+.tp-number {
+  position: absolute; width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  transform: translate(-50%,-50%);
+  font-size: 13px; font-weight: 500;
+  color: var(--on-surface-muted); border-radius: 50%;
+  transition: color .13s, background .13s; cursor: pointer; z-index: 15;
+}
+.tp-number.active { color: white; background: var(--primary); }
+
+/* ─── Timer (scroll) ──────────────────────────────────────────────────  */
+.timer-body {
+  display: flex; align-items: center; justify-content: center;
+  gap: 4px; padding: 16px 16px 12px;
+}
+.timer-row {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 4px;
+}
+.timer-step-btn {
+  background: none; border: none;
+  font-size: 13px; color: var(--on-surface-muted);
+  cursor: pointer; padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  transition: background .13s, color .13s;
+  line-height: 1;
+}
+.timer-step-btn:hover { background: var(--surface-container); color: var(--primary); }
+.timer-val {
+  font-family: 'DM Serif Display', serif;
+  font-size: 36px; font-weight: 400;
+  color: var(--on-surface); min-width: 56px; text-align: center;
+}
+.timer-colon-sep {
+  font-family: 'DM Serif Display', serif;
+  font-size: 32px; color: var(--on-surface-muted);
+  padding-bottom: 4px; min-width: 16px; text-align: center;
+}
+.timer-colon-sep::after { content: ':'; }
+.timer-colon-sep:last-of-type::after { content: ''; }
+.timer-ampm-col .timer-val { font-size: 22px; min-width: 44px; }
+
+/* ─── Shared footer ───────────────────────────────────────────────────  */
+.cal-footer, .tp-footer {
+  display: flex; justify-content: flex-end; gap: 8px;
+  padding: 8px 16px 16px;
+  border-top: 1px solid var(--outline-subtle);
+}
+.btn-cancel {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 600;
+  padding: 8px 14px; border: none; background: none;
+  border-radius: var(--radius-sm);
+  color: var(--on-surface-muted); cursor: pointer;
+  transition: background .13s;
+}
+.btn-cancel:hover { background: var(--surface-high); }
+.btn-set {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 600;
+  padding: 8px 18px; border: none;
+  background: var(--primary); color: white;
+  border-radius: var(--radius-sm); cursor: pointer;
+  transition: background .13s, transform .1s, box-shadow .13s;
+}
+.btn-set:hover  { background: #2d1faa; box-shadow: 0 4px 12px rgba(31,16,142,.25); }
+.btn-set:active { transform: scale(.97); }
+
+/* ─── API demo labels ─────────────────────────────────────────────────  */
+.api-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--on-surface-muted);
+  margin-bottom: 4px;
+}
+.api-label code {
+  font-family: monospace;
+  font-size: 12px;
+  background: var(--surface-container);
+  padding: 2px 7px;
+  border-radius: 5px;
+  color: var(--primary);
+}
+.api-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--outline-subtle);
+  margin: 4px 0;
+}
+
+/* ─── Section labels ──────────────────────────────────────────────── */
+.section-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--on-surface-muted);
+  margin-bottom: 2px;
+}
+.section-label code {
+  font-family: monospace;
+  font-size: 11px;
+  background: var(--surface-container);
+  padding: 2px 6px;
+  border-radius: 5px;
+  color: var(--primary);
+}
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--outline-subtle);
+  margin: 4px 0 8px;
+}
+
+/* ─── DateTime picker (side-by-side layout) ───────────────────────── */
+.pickr-datetime {
+  width: 620px;
+}
+
+.dt-layout {
+  display: flex;
+  align-items: stretch;
+}
+
+/* Date panel — left */
+.dt-date-panel {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Time panel — right */
+.dt-time-panel {
+  flex: 0 0 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Vertical divider between panels */
+.dt-divider {
+  width: 1px;
+  background: var(--outline-subtle);
+  flex-shrink: 0;
+}
+
+/* Each panel's purple header */
+.dt-cal-header {
+  background: var(--primary-container);
+  padding: 18px 18px 14px;
+  color: white;
+}
+
+/* Shared header inside time panel */
+.dt-time-panel .tp-header {
+  padding: 18px 16px 12px;
+}
+
+/* Smaller clock face inside datetime */
+.dt-time-panel .tp-clock-face {
+  width: 200px;
+  height: 200px;
+}
+
+.dt-time-panel .tp-clock-wrap {
+  padding: 10px 16px 14px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Nav scoped to date panel only */
+.dt-nav {
+  padding: 10px 14px 4px;
+}
+
+/* Tighter grid inside datetime */
+.dt-date-panel .cal-grid-wrap {
+  padding: 0 12px 12px;
+}
+
+.dt-date-panel .cal-day {
+  font-size: 12px;
+  padding: 5px 2px;
+}
+
+/* Footer spans full width below both panels */
+.pickr-datetime .cal-footer {
+  border-top: 1px solid var(--outline-subtle);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   dateTime() — compact dropdown (appointment card style)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Card width — same feel as clock picker */
+.pickr-datetime { width: 320px; }
+
+/* ── Purple summary header ────────────────────────────────────────── */
+.pdt-header {
+  background: var(--primary-container);
+  padding: 16px 18px 14px;
+  color: white;
+  user-select: none;
+}
+.pdt-header-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  opacity: .72;
+  margin-bottom: 6px;
+}
+.pdt-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pdt-sum-date,
+.pdt-sum-time {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  line-height: 1.1;
+  color: white;
+}
+.pdt-sum-sep { opacity: .45; font-size: 16px; }
+/* ── Time body ────────────────────────────────────────────────────── */
+.pdt-time-body input,.pdt-time-body button {
+  color: #0d1c2e !important;
+  background-color: transparent;
+}
+.pdt-time-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 14px 14px;
+}
+.pdt-time-body .tp-mode-row .active,.pdt-time-body .tp-ampm-toggle .active{
+   background: var(--primary-container) !important;
+    color: #fff !important; }
+.pdt-time-body .tp-mode-btn,.pdt-time-body .tp-ampm-btn { background: var(--surface-low);}
+.tp-display-part input { display: flex;
+    font-size: 100% !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 1.3em !important
+  }
